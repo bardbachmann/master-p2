@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<html manifest="" lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Dragndrop</title>
+    <style type="text/css">
+         /**
+         * Example of an initial loading indicator.
+         * It is recommended to keep this as minimal as possible to provide instant feedback
+         * while other resources are still being loaded for the first time
+         */
+        html, body {
+            height: 100%;
+            background-color: #1985D0
+        }
+
+        #appLoadingIndicator {
+            position: absolute;
+            top: 50%;
+            margin-top: -15px;
+            text-align: center;
+            width: 100%;
+            height: 30px;
+            -webkit-animation-name: appLoadingIndicator;
+            -webkit-animation-duration: 0.5s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-direction: linear;
+        }
+
+        #appLoadingIndicator > * {
+            background-color: #FFFFFF;
+            display: inline-block;
+            height: 30px;
+            -webkit-border-radius: 15px;
+            margin: 0 5px;
+            width: 30px;
+            opacity: 0.8;
+        }
+
+        @-webkit-keyframes appLoadingIndicator{
+            0% {
+                opacity: 0.8
+            }
+            50% {
+                opacity: 0
+            }
+            100% {
+                opacity: 0.8
+            }
+        }
+    </style>
+    <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+    <!-- The line below must be kept intact for Sencha Command to build your application -->
+
+    <script type="text/javascript">(function(h){function f(c,d){document.write('<meta name="'+c+'" content="'+d+'">')}if("undefined"===typeof g)var g=h.Ext={};g.blink=function(c){var d=c.js||[],c=c.css||[],b,e,a;f("viewport","width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no");f("apple-mobile-web-app-capable","yes");f("apple-touch-fullscreen","yes");for(b=0,e=c.length;b<e;b++)a=c[b],"string"!=typeof a&&(a=a.path),document.write('<link rel="stylesheet" href="'+a+'">');for(b=0,e=d.length;b<
+e;b++)a=d[b],"string"!=typeof a&&(a=a.path),document.write('<script src="'+a+'"><\/script>')}})(this);
+;Ext.blink({"id":"6575eb20-dda3-11e1-8a17-bdec491d6666","js":[{"path":"sdk/sencha-touch.js","type":"js"},{"path":"app.js","bundle":true,"update":"full","type":"js"}],"css":[{"path":"resources/css/app.css","update":"delta","type":"css"}]})</script>
+
+
+    <script type="text/javascript" charset="utf-8">
+
+        // Call onDeviceReady when PhoneGap is loaded.
+        //
+        // At this point, the document has loaded but phonegap-1.1.0.js has not.
+        // When PhoneGap is loaded and talking with the native device,
+        // it will call the event `deviceready`.
+        //
+        function onLoad() {
+            document.addEventListener("deviceready", onDeviceReady, false);
+        }
+
+        // PhoneGap is loaded and it is now safe to call PhoneGap methods
+        //
+        function onDeviceReady() {
+            // Register the event listener
+            document.addEventListener("backbutton", onBackKeyDown, false);
+            document.addEventListener("menubutton", onMenuButtonDown, false);
+        }
+
+        // Handle the back button
+        //
+        function onBackKeyDown() {
+
+            Ext.Viewport.removeAll();
+            var back = Ext.Viewport.add({
+                xtype: 'main'
+            });
+
+            Ext.Viewport.setActiveItem(back);
+
+        }
+
+        function onMenuButtonDown(){
+            var overlay = new Ext.Panel({
+                overlay: true,
+                // centered: true,
+                width: 400,
+                height: 400,
+                modal: true,
+                hideOnMaskTap: true,
+                layout: 'vbox',
+                scrollable: 'vertical',
+
+                items: [
+                    {
+                        xtype: 'container',
+                        html: '<h1>Hovedmeny</h1><br/>' +
+                                '<p>Kategorier:</p>',
+                        styleHtmlContent: true,
+                        cls: 'menuOverlay'
+                    },
+
+                    {
+                        xtype: 'button',
+                        text: 'Rediger kategorier',
+                        height: 60,
+                        //     action: 'EditCategory',
+                        //           ui: 'action',
+                        id: 'EditCategory',
+                        cls: 'menuOverlay',
+                        style: 'margin-left: 15px; margin-right: 15px',
+                        listeners: {
+                            tap: function(){
+                                overlay.hide();
+                                Ext.Viewport.removeAll();
+                                var next = Ext.Viewport.add({
+                                    xtype: 'CategoryList'});
+
+                                Ext.Viewport.setActiveItem(next)
+                            }
+                        }
+                    },
+                    {
+                        xtype: 'container',
+                        html:
+                                '<p>Utseende:</p>',
+                        styleHtmlContent: true,
+                        cls: 'menuOverlay'
+                    },
+                    {
+                        xtype: 'button',
+                        html: 'Nyhetsbilder  <img class="rightImage" src="./resources/images/offtoggle.png">',
+                        height: 60,
+                        id: 'imageToggle',
+                        cls: 'menuOverlay',
+                        action: 'toggleImage',
+                        style: 'margin-left: 15px; margin-right: 15px'
+
+                    },
+                    {
+                        xtype: 'spacer',
+                        height: 5
+                    },
+                    {
+                        xtype: 'button',
+                        height: 60,
+                        id: 'zoomToggle',
+                        cls: 'menuOverlay',
+                        /*listeners: {
+                         tap: function() {
+                         console.log('hum');
+                         var store = Ext.getStore('Designsettings');
+                         if(store.getAt(0).get('zoom') == false){
+                         Ext.getCmp('zoomToggle').setHtml('Større font  <img src="./resources/images/ontoggle.png">')
+                         store.getAt(0).set('zoom', true);
+                         store.sync();
+                         }
+
+                         else if(store.getAt(0).get('zoom') == true){
+                         Ext.getCmp('zoomToggle').setHtml('Større font  <img src="./resources/images/offtoggle.png">')
+                         store.getAt(0).set('zoom', false);
+                         store.sync();
+                         };
+
+                         }
+                         },*/
+                        action: 'toggleZoom',
+                        style: 'margin-left: 15px; margin-right: 15px'
+
+                    }
+                ]
+            });
+
+            // Ext.getCmp('zoomToggle').hide();
+
+            var viewPortHeight = Ext.Viewport.getWindowHeight();
+            var viewPortWidth = Ext.Viewport.getWindowWidth();
+
+            var toolbarHeight = Ext.getCmp('newsTitle').element.getHeight();
+
+            var windowWidth = viewPortWidth / 1.2;
+            var windowHeight = viewPortHeight - toolbarHeight;
+
+            overlay.setHeight(windowHeight);
+            overlay.setWidth(windowWidth);
+            console.log(toolbarHeight);
+            overlay.setLeft((0));
+            overlay.setTop((toolbarHeight));
+
+            Ext.Viewport.add(overlay);
+        }
+
+    </script>
+</head>
+<body onload="onLoad()">
+    <div id="appLoadingIndicator">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</body>
+</html>
