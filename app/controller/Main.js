@@ -930,7 +930,7 @@ onMyPanelTap: function(a) {
                     height: 60,
                     id: 'firstInstall',
                     cls: 'menuOverlay',
-                    html: 'Hvordan bruke applikasjonen',
+                    html: 'Hjelp',
                     action: 'firstInstall',
                     style: 'margin-left: 15px; margin-right: 15px'
 

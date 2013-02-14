@@ -91,12 +91,24 @@ e;b++)a=d[b],"string"!=typeof a&&(a=a.path),document.write('<script src="'+a+'">
         }
 
         function onMenuButtonDown(){
+            if(Ext.getCmp('EditCategory')){
+                Ext.getCmp('EditCategory').destroy();
+                Ext.getCmp('imageToggle').destroy();
+                Ext.getCmp('zoomToggle').destroy();
+                Ext.getCmp('otherToggle').destroy();
+                Ext.getCmp('commentToggle').destroy();
+
+                Ext.getCmp('firstInstall').destroy();
+            }
+
             var overlay = new Ext.Panel({
                 overlay: true,
                 // centered: true,
                 width: 400,
                 height: 400,
                 modal: true,
+                top: 0,
+                left: 0,
                 hideOnMaskTap: true,
                 layout: 'vbox',
                 scrollable: 'vertical',
@@ -177,6 +189,55 @@ e;b++)a=d[b],"string"!=typeof a&&(a=a.path),document.write('<script src="'+a+'">
                         action: 'toggleZoom',
                         style: 'margin-left: 15px; margin-right: 15px'
 
+                    },
+                    {
+                        xtype: 'spacer',
+                        height: 5
+                    },
+                    {
+                        xtype: 'button',
+                        height: 60,
+                        id: 'commentToggle',
+                        cls: 'menuOverlay',
+                        html: 'Kommentarer  <img class="rightImage" src="./resources/images/offtoggle.png">',
+                        action: 'toggleComment',
+                        style: 'margin-left: 15px; margin-right: 15px'
+
+                    },
+                    {
+                        xtype: 'spacer',
+                        height: 5
+                    },
+                    {
+                        xtype: 'button',
+                        height: 60,
+                        id: 'otherToggle',
+                        cls: 'menuOverlay',
+                        html: 'Andre saker  <img class="rightImage" src="./resources/images/offtoggle.png">',
+                        action: 'toggleOther',
+                        style: 'margin-left: 15px; margin-right: 15px'
+
+                    },
+                    {
+                        xtype: 'spacer',
+                        height: 5
+                    },
+                    {
+                        xtype: 'container',
+                        html:
+                                '<p>Hjelp:</p>',
+                        styleHtmlContent: true,
+                        cls: 'menuOverlay'
+                    },
+                    {
+                        xtype: 'button',
+                        height: 60,
+                        id: 'firstInstall',
+                        cls: 'menuOverlay',
+                        html: 'Hjelp',
+                        action: 'firstInstall',
+                        style: 'margin-left: 15px; margin-right: 15px'
+
                     }
                 ]
             });
@@ -194,10 +255,12 @@ e;b++)a=d[b],"string"!=typeof a&&(a=a.path),document.write('<script src="'+a+'">
             overlay.setHeight(windowHeight);
             overlay.setWidth(windowWidth);
             console.log(toolbarHeight);
-            overlay.setLeft((0));
-            overlay.setTop((toolbarHeight));
+            overlay.setLeft((0-10));
+            overlay.setTop((toolbarHeight-10));
 
             Ext.Viewport.add(overlay);
+
+
         }
 
     </script>
