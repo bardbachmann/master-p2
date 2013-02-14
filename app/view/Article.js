@@ -9,11 +9,6 @@ Ext.define("Dragndrop.view.Article", {
     /* initialize: function() {
 
      }, */
-    listeners: {
-        painted: function(){
-            this.relayEvents(this.element, ['tap']);
-        }
-    },
 
 
 
@@ -24,9 +19,13 @@ Ext.define("Dragndrop.view.Article", {
         styleHtmlContent: true,
         scrollable: 'vertical',
         id: 'newsContent',
-
         xtype: 'container',
         action: 'articleStart',
+        listeners: {
+            painted: function(){
+                this.relayEvents(this.element, ['tap']);
+            }
+        },
 
 
         html: '<b>Testing</b>',

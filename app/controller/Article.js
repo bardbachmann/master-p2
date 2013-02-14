@@ -21,13 +21,16 @@ Ext.define('Dragndrop.controller.Article', {
         this.control({
 
             'container[action=articleStart]': {
-
+                initialize: 'testing',
                 tap: 'articleStart'
             }
 
         });
     },
 
+    testing: function(){
+
+    },
 
 articleStart: function(a) {
    // console.log("Hurr");
